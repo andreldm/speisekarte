@@ -9,9 +9,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 const envvar = process.env.SPEISEKARTE_CONFIG;
-const config = JSON.parse(fs.readFileSync(envvar || "config.json"));
+const config = JSON.parse(fs.readFileSync(envvar || 'config.json'));
 const port = config.port || 3000;
 const timeout = config.timeout || 10000;
+const title = config.title || "Speisekarte";
 
 const categories = config.categories;
 const services = config.services;
@@ -20,7 +21,8 @@ const servicesMap = new Map(services.map(s => [s.key, s]));
 app.get('/config', (req, res) => {
     res.send({
         categories: categories,
-        services: services
+        services: services,
+        title: title
     });
 });
 

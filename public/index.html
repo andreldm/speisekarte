@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Analytics Environments</title>
+    <title>Loading</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -32,8 +32,8 @@
         const app = new Vue({
             el: '#app',
             data: {
-                services: [],
-                categories: []
+                categories: [],
+                services: []
             },
             beforeCreate: function () {
                 const app = this;
@@ -43,6 +43,7 @@
                 .then((config) => {
                     app.$data.categories = config.categories;
                     app.$data.services = config.services;
+                    document.title = config.title;
 
                     config.services.forEach((service) => {
                         fetch(`/service/${service.key}/info`)
