@@ -6,5 +6,7 @@ services:
     image: speisekarte
     restart: always
     mem_limit: 256m
+    volumes:
+      - ./config.json:/app/config.json
     ports:
       - "3000:3000"
