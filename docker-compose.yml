@@ -1,0 +1,10 @@
+version: '2'
+services:
+  speisekarte:
+    build: .
+    container_name: speisekarte
+    image: speisekarte
+    restart: always
+    mem_limit: 256m
+    ports:
+      - "3000:3000"

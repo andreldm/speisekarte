@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Analytics Environments</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="app" class="content">
+        <div v-show="categories.length === 0">Loading</div>
+
+        <div v-cloak v-for="(category, index) in categories">
+            <h2>{{ category.title }}</h2>
+
+            <div v-for="service in services" v-if="service.category === category.key">
+                <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
+                <div v-else>
+                    <span class="lds-text">{{ service.name }}</span><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+
+            <hr v-if="index + 1 < categories.length">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                services: [],
+                categories: []
+            },
+            beforeCreate: function () {
+                const app = this;
+
+                fetch('/categories')
+                .then((response) => response.json())
+                .then((categories) => {
+                    app.$data.categories = categories;
+                });
+
+                fetch('/services')
+                .then((response) => response.json())
+                .then((services) => {
+                    app.$data.services = services;
+
+                    services.forEach((service) => {
+                        fetch(`/service/${service.key}/info`)
+                        .then((response) => response.json())
+                        .then((info) => app.$set(service, 'status', info.status))
+                        .catch(() => app.$set(service, 'status', 'offline'));
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
