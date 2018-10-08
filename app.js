@@ -12,7 +12,6 @@ const envvar = process.env.SPEISEKARTE_CONFIG;
 
 const config = JSON.parse(fs.readFileSync(envvar || "config.json"));
 const categories = config.categories;
-const categoriesMap = new Map(categories.map(s => [s.key, s]));
 const services = config.services;
 const servicesMap = new Map(services.map(s => [s.key, s]));
 
