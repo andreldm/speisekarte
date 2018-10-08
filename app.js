@@ -17,16 +17,11 @@ const categories = config.categories;
 const services = config.services;
 const servicesMap = new Map(services.map(s => [s.key, s]));
 
-app.get('/categories', (req, res) => {
-    res.send(categories);
-});
-
-app.get('/services', (req, res) => {
-    res.send(services);
-});
-
-app.get('/service/:key', (req, res) => {
-    res.send(servicesMap.get(req.params.key));
+app.get('/config', (req, res) => {
+    res.send({
+        categories: categories,
+        services: services
+    });
 });
 
 app.get('/service/:key/info', (req, res) => {

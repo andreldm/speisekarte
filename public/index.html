@@ -38,18 +38,13 @@
             beforeCreate: function () {
                 const app = this;
 
-                fetch('/categories')
+                fetch('/config')
                 .then((response) => response.json())
-                .then((categories) => {
-                    app.$data.categories = categories;
-                });
+                .then((config) => {
+                    app.$data.categories = config.categories;
+                    app.$data.services = config.services;
 
-                fetch('/services')
-                .then((response) => response.json())
-                .then((services) => {
-                    app.$data.services = services;
-
-                    services.forEach((service) => {
+                    config.services.forEach((service) => {
                         fetch(`/service/${service.key}/info`)
                         .then((response) => response.json())
                         .then((info) => app.$set(service, 'status', info.status))
