@@ -52,6 +52,8 @@ hr {
 
 /* loading animation */
 .lds-text {
+    color: #AAA;
+    text-decoration: none;
     display: inline-block;
     margin: 4px 0;
 }

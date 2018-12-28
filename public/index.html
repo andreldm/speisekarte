@@ -19,7 +19,7 @@
             <div v-for="service in services" v-if="service.category === category.key">
                 <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
                 <div v-else>
-                    <span class="lds-text">{{ service.name }}</span><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                    <a class="lds-text" :href="service.url" target="_blank">{{ service.name }}</a><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
             </div>
 
