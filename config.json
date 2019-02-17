@@ -1,0 +1,30 @@
+{
+    "port": 3000,
+    "timeout": 10000,
+    "categories": [
+        {
+            "key": "news",
+            "title": "News"
+        }
+    ],
+    "services": [
+        {
+            "key": "hacker-news",
+            "category": "news",
+            "name": "Hacker News",
+            "url": "https://news.ycombinator.com/"
+        },
+        {
+            "key": "slashdot",
+            "category": "news",
+            "name": "Slashdot",
+            "url": "http://slashdot.com/"
+        },
+        {
+            "key": "phoronix",
+            "category": "news",
+            "name": "Phoronix",
+            "url": "http://phoronix.com/"
+        }
+    ]
+}
