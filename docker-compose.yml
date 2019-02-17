@@ -3,7 +3,7 @@ services:
   speisekarte:
     build: .
     container_name: speisekarte
-    image: speisekarte
+    image: andreldm/speisekarte:latest
     restart: always
     mem_limit: 256m
     volumes:
