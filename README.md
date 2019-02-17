@@ -5,7 +5,7 @@ It saves people remembering ip addresses or hostnames of services scattered thro
 Instead a straightforward menu may be offered.
 
 ## How to run
-- `https://raw.githubusercontent.com/andreldm/speisekarte/master/docker-compose.yml`
+- `wget https://raw.githubusercontent.com/andreldm/speisekarte/master/docker-compose.yml`
 - `wget https://raw.githubusercontent.com/andreldm/speisekarte/master/config.json`
 - edit config.json
 - `docker-compose pull`
