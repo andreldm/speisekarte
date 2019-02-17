@@ -5,10 +5,10 @@ It saves people remembering ip addresses or hostnames of services scattered thro
 Instead a straightforward menu may be offered.
 
 ## How to run
-- `git clone https://github.com/andreldm/speisekarte.git`
-- `cd speisekarte`
-- `npm install`
+- `https://raw.githubusercontent.com/andreldm/speisekarte/master/docker-compose.yml`
+- `wget https://raw.githubusercontent.com/andreldm/speisekarte/master/config.json`
 - edit config.json
+- `docker-compose pull`
 - `docker-compose up -d`
 - open http://localhost:3000
 
@@ -16,4 +16,4 @@ Instead a straightforward menu may be offered.
 
 - [ ] Add a screenshot
 - [X] Add a sample configuration file
-- [ ] Publish a docker image
+- [X] Publish a docker image
