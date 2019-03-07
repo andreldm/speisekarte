@@ -1,10 +1,15 @@
 {
     "port": 3000,
     "timeout": 10000,
+    "title": "Technology News",
     "categories": [
         {
             "key": "news",
             "title": "News"
+        },
+        {
+            "key": "linux",
+            "title": "Linux"
         }
     ],
     "services": [
@@ -18,13 +23,29 @@
             "key": "slashdot",
             "category": "news",
             "name": "Slashdot",
+            "description": "News for nerds, stuff that matters",
             "url": "http://slashdot.com/"
         },
         {
             "key": "phoronix",
             "category": "news",
             "name": "Phoronix",
+            "description": "Linux Hardware Reviews, Open-Source Benchmarks & Linux Performance - Phoronix",
             "url": "http://phoronix.com/"
+        },
+        {
+            "key": "arch",
+            "category": "linux",
+            "name": "Arch Linux",
+            "description": "A simple, lightweight distribution",
+            "url": "https://www.archlinux.org/"
+        },
+        {
+            "key": "xfce",
+            "category": "linux",
+            "name": "Xfce",
+            "description": "Xfce is a lightweight desktop environment for UNIX-like operating systems",
+            "url": "https://xfce.org/"
         }
     ]
 }
