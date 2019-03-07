@@ -36,4 +36,4 @@ app.get('/service/:key/info', (req, res) => {
         .finally(() => res.send(info));
 });
 
-app.listen(port, () => console.log(`Speisekarte ist ready zu serve at port ${port}`));
+app.listen(port, () => console.log(`Speisekarte ist ready zu serve at http://localhost:${port}`));
