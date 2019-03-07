@@ -6,24 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Loading</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/clay/lib/css/atlas.css">
+    <style>
+        .center { text-align: center; }
+        .list-group { margin-bottom: 1rem; }
+        .loading-animation {
+            display: inline;
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+        .online {
+            color: #02AC1E !important;
+            text-decoration: none;
+        }
+        .offline {
+            color: #AAA !important;
+            text-decoration: line-through;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app" class="content">
-        <div v-show="categories.length === 0">Loading</div>
+    <div id="app" class="clay-site-container container-fluid">   
+        <div class="col-md-12">
+            <div class="container-fluid container-fluid-max-sm container-no-gutters-sm-down container-view">
+                <h1 class="center" v-show="categories.length === 0">Loading...</h1>
+                <div v-cloak v-show="categories.length > 0">
+                    <h1 class="center">{{ document.title }}</h1>
+                    <p></p>
+                    <ul class="list-group show-quick-actions-on-hover">
+                        <template v-for="(category, index) in categories">
+                            <li class="list-group-header">
+                                <h3 class="list-group-header-title">{{ category.title }}</h3>
+                            </li>
 
-        <div v-cloak v-for="(category, index) in categories">
-            <h2>{{ category.title }}</h2>
+                            <li class="list-group-item list-group-item-flex" v-for="service in services" v-if="service.category === category.key">
+                                <div class="autofit-col autofit-col-expand">
+                                    <h4 class="list-group-title text-truncate">
+                                        <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
+                                        <div v-else>
+                                            <a :href="service.url" target="_blank">{{ service.name }}</a>
+                                            <span aria-hidden="true" class="loading-animation"></span>
+                                        </div>
+                                    </h4>
+                                    <p class="list-group-subtitle text-truncate" v-bind:title="service.description">{{ service.description }}</p>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
 
-            <div v-for="service in services" v-if="service.category === category.key">
-                <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
-                <div v-else>
-                    <a class="lds-text" :href="service.url" target="_blank">{{ service.name }}</a><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
             </div>
-
-            <hr v-if="index + 1 < categories.length">
         </div>
     </div>
 
