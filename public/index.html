@@ -55,10 +55,10 @@
                                 <div class="autofit-col autofit-col-expand">
                                     <h4 class="list-group-title text-truncate">
                                         <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
-                                        <div v-else>
+                                        <template v-else>
                                             <a :href="service.url" target="_blank">{{ service.name }}</a>
                                             <span aria-hidden="true" class="loading-animation"></span>
-                                        </div>
+                                        </template>
                                     </h4>
                                     <p class="list-group-subtitle text-truncate" v-if="!compact" v-bind:title="service.description">{{ service.description }}</p>
                                 </div>
