@@ -14,12 +14,14 @@ const port = config.port || 3000;
 const timeout = config.timeout || 10000;
 const title = config.title || "Speisekarte";
 
+const compact = config.compact || false;
 const categories = config.categories;
 const services = config.services;
 const servicesMap = new Map(services.map(s => [s.key, s]));
 
 app.get('/config', (req, res) => {
     res.send({
+        compact: compact,
         categories: categories,
         services: services,
         title: title

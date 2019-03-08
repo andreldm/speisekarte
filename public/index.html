@@ -16,6 +16,12 @@
             font-size: 0.75rem;
             margin-left: 8px;
         }
+        .compact .list-group-item {
+            padding-bottom: 0;
+            padding-top: 0;
+        }
+        .compact .list-group-title { margin: 0 auto; }
+        .compact .list-group-header-title { margin: 0 auto; }
         .octicon { fill:  #555; }
         .online {
             color: #02AC1E !important;
@@ -39,7 +45,7 @@
                 <div v-cloak v-show="categories.length > 0">
                     <h1 class="center">{{ document.title }}</h1>
                     <p></p>
-                    <ul class="list-group show-quick-actions-on-hover">
+                    <ul class="list-group show-quick-actions-on-hover" v-bind:class="{ compact: compact }">
                         <template v-for="(category, index) in categories">
                             <li class="list-group-header">
                                 <h3 class="list-group-header-title">{{ category.title }}</h3>
@@ -54,7 +60,7 @@
                                             <span aria-hidden="true" class="loading-animation"></span>
                                         </div>
                                     </h4>
-                                    <p class="list-group-subtitle text-truncate" v-bind:title="service.description">{{ service.description }}</p>
+                                    <p class="list-group-subtitle text-truncate" v-if="!compact" v-bind:title="service.description">{{ service.description }}</p>
                                 </div>
                             </li>
                         </template>
@@ -77,6 +83,7 @@
         const app = new Vue({
             el: '#app',
             data: {
+                compact: false,
                 categories: [],
                 services: []
             },
@@ -87,6 +94,7 @@
                 .then((response) => response.json())
                 .then((config) => {
                     app.$data.categories = config.categories;
+                    app.$data.compact = config.compact;
                     app.$data.services = config.services;
                     document.title = config.title;
 
