@@ -32,8 +32,8 @@ app.get('/service/:key/info', (req, res) => {
     const service = servicesMap.get(req.params.key);
     const info = {};
 
-    rq({uri: service.url, timeout: timeout, simple: false })
-        .then(() => info.status = 'online')
+    rq({uri: service.url, timeout: timeout, simple: false, resolveWithFullResponse: true })
+        .then((res) => info.status = (res.statusCode >= 500 ?  'offline' : 'online'))
         .catch(() => info.status = 'offline')
         .finally(() => res.send(info));
 });
