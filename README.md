@@ -12,8 +12,6 @@ Instead a straightforward menu may be offered.
 - `docker-compose up -d`
 - open http://localhost:3000
 
-## TODO
+## Screenshot
 
-- [ ] Add a screenshot
-- [X] Add a sample configuration file
-- [X] Publish a docker image
+![screenshot](https://user-images.githubusercontent.com/599565/70718827-b80eb100-1ccf-11ea-8622-7e7ca6faf280.png)
