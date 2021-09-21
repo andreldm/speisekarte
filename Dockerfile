@@ -1,10 +1,12 @@
-FROM node:10-alpine
+FROM golang:1.17-alpine as build
+WORKDIR /build
+COPY app.go go.mod go.sum /build/
+RUN go get -d -v ./...
+RUN go build
 
-COPY app.js package.json /app/
-COPY public /app/public/
-
+FROM alpine:3.13
 WORKDIR /app
-
-RUN npm i
-
-CMD ["npm","start"]
+COPY --from=build /build/speisekarte /app
+COPY index.html /app
+ENV GIN_MODE=release
+CMD ["/app/speisekarte"]

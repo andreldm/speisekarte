@@ -25,7 +25,7 @@
             "category": "news",
             "name": "Slashdot",
             "description": "News for nerds, stuff that matters",
-            "url": "http://slashdot.com/"
+            "url": "https://slashdot.org/"
         },
         {
             "key": "phoronix",
