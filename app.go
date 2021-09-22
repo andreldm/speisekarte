@@ -94,7 +94,7 @@ func main() {
         }
 
         resp, err := client.Get(service.Url)
-        if err != nil || resp.StatusCode >= 400 {
+        if err != nil || resp.StatusCode >= 500 {
             c.JSON(200, gin.H{"status": "offline"})
         } else {
             c.JSON(200, gin.H{"status": "online"})
