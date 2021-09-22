@@ -4,7 +4,7 @@ services:
     build: .
     container_name: speisekarte
     image: andreldm/speisekarte:latest
-    restart: always
+    restart: unless-stopped
     mem_limit: 256m
     volumes:
       - ./config.json:/app/config.json
