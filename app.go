@@ -24,13 +24,13 @@ type Service struct {
 }
 
 type Config struct {
-    Port int `json:"port"`
-    Timeout int `json:"timeout"`
+    Port int `json:"-"`
+    Timeout int `json:"-"`
     Title string `json:"title"`
     Compact bool `json:"compact"`
     Categories []Category `json:"categories"`
     Services []Service `json:"services"`
-    ServiceMap map[string]Service
+    ServiceMap map[string]Service `json:"-"`
 }
 
 func loadConfig() (*Config, error) {
