@@ -127,27 +127,11 @@
 </head>
 
 <body>
-    <div id="app" class="container">
-        <h1 class="center" v-show="categories.length === 0">Loading...</h1>
-        <div v-cloak v-show="categories.length > 0">
-            <h1 class="center">{{ document.title }}</h1>
-            <ul class="list" v-bind:class="{ compact: compact }">
-                <template v-for="(category, index) in categories">
-                    <li class="header">
-                        <h3 class="title">{{ category.title }}</h3>
-                    </li>
-                    <li class="item" v-for="service in services" v-if="service.category === category.key">
-                        <h4 class="title">
-                            <a v-if="service.status" :class="service.status" :href="service.url" target="_blank">{{ service.name }}</a>
-                            <template v-else>
-                                <a :href="service.url" target="_blank">{{ service.name }}</a>
-                                <span class="lds-ring"><span></span><span></span><span></span><span></span></span>
-                            </template>
-                        </h4>
-                        <p class="subtitle" v-if="!compact" v-bind:title="service.description">{{ service.description }}</p>
-                    </li>
-                </template>
-            </ul>
+    <div class="container">
+        <h1 id="loading" class="center">Loading...</h1>
+        <div id="content" style="display: none;">
+            <h1 id="title" class="center"></h1>
+            <ul id="list" class="list"></ul>
             <div class="center">
                 <a class="center" href="https://github.com/andreldm/speisekarte" target="_blank">
                     <svg height="16" class="octicon" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true">
@@ -158,34 +142,76 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <template id="template-category">
+        <li class="header">
+            <h3 class="title"></h3>
+        </li>
+    </template>
+
+    <template id="template-service">
+        <li class="item">
+            <h4 class="title">
+                <a target="_blank"></a>
+                <span class="lds-ring"><span></span><span></span><span></span><span></span></span>
+            </h4>
+            <p class="subtitle" style="display: none;"></p>
+        </li>
+    </template>
+
     <script>
-        const app = new Vue({
-            el: '#app',
-            data: {
-                compact: false,
-                categories: [],
-                services: []
-            },
-            beforeCreate: function () {
-                const app = this;
+        function hide(el) { el.style.display = "none"; }
+        function show(el) { el.style.display = "initial"; }
+        function q(a, b) { return arguments.length == 1 ? document.querySelector(a) : a.querySelector(b); }
+        function findSlot(el) {
+            return el.nextElementSibling == null
+                ? null
+                : el.nextElementSibling.className == "item"
+                    ? findSlot(el.nextElementSibling)
+                    : el.nextElementSibling;
+        }
 
-                fetch('/config')
+        fetch('/config')
+        .then((response) => response.json())
+        .then((config) => {
+            const list = q("#list");
+            const templateCategory = q('#template-category');
+            const templateService = q('#template-service');
+
+            document.title = config.title;
+            q("#title").textContent = config.title;
+            if (config.compact) list.classList.add("compact");
+
+            hide(q("#loading"));
+            show(q("#content"));
+
+            config.categories.forEach((category) => {
+                const el = templateCategory.content.cloneNode(true);
+                q(el, "h3").textContent = category.title;
+                q(el, "li").id = `category-${category.key}`;
+                list.appendChild(el);
+            });
+
+            config.services.forEach((service) => {
+                const el = templateService.content.cloneNode(true);
+                const link = q(el, "a");
+                const icon = q(el, "span");
+                const category = q(`#category-${service.category}`)
+                const update = (status) => { hide(icon); link.classList.add(status); }
+
+                link.textContent = service.name;
+                link.href = service.url;
+                if (!config.compact) {
+                    const description = q(el, "p");
+                    description.textContent = service.description;
+                    show(description);
+                }
+                list.insertBefore(el, findSlot(category));
+
+                fetch(`/service/${service.key}/info`)
                 .then((response) => response.json())
-                .then((config) => {
-                    app.$data.categories = config.categories;
-                    app.$data.compact = config.compact;
-                    app.$data.services = config.services;
-                    document.title = config.title;
-
-                    config.services.forEach((service) => {
-                        fetch(`/service/${service.key}/info`)
-                        .then((response) => response.json())
-                        .then((info) => app.$set(service, 'status', info.status))
-                        .catch(() => app.$set(service, 'status', 'offline'));
-                    });
-                });
-            }
+                .then((info) => update(info.status))
+                .catch(() => update("offline"));
+            });
         });
     </script>
 </body>
