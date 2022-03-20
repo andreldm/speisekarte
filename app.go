@@ -21,6 +21,7 @@ type Service struct {
     Name string `json:"name"`
     Description string `json:"description"`
     Url string `json:"url"`
+    OverrideHostname bool `json:"overrideHostname"`
 }
 
 type Config struct {

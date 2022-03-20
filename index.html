@@ -199,6 +199,11 @@
                 const update = (status) => { hide(icon); link.classList.add(status); }
 
                 link.textContent = service.name;
+                if (service.overrideHostname) {
+                    const url = new URL(service.url);
+                    url.hostname = location.hostname;
+                    service.url = url.toString();
+                }
                 link.href = service.url;
                 if (!config.compact) {
                     const description = q(el, "p");
