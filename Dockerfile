@@ -8,5 +8,4 @@ FROM alpine:3.13
 WORKDIR /app
 COPY --from=build /build/speisekarte /app
 COPY index.html /app
-ENV GIN_MODE=release
 CMD ["/app/speisekarte"]

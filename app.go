@@ -3,7 +3,6 @@ package main
 import (
     "encoding/json"
     "fmt"
-    "github.com/gin-gonic/gin"
     "io/ioutil"
     "net/http"
     "os"
@@ -71,37 +70,51 @@ func main() {
         panic(err)
     }
 
+    configMarshaled, err := json.Marshal(config)
+    if err != nil {
+        panic(err)
+    }
+
     client := http.Client{
         Timeout: time.Duration(config.Timeout) * time.Millisecond,
     }
 
-    r := gin.Default()
+    mux := http.NewServeMux()
 
-    r.GET("/", func(c *gin.Context) {
-        c.File("index.html")
-    })
-
-    r.GET("/config", func(c *gin.Context) {
-        c.JSON(200, config)
-    })
-
-    r.GET("/service/:key/info", func(c *gin.Context) {
-        key := c.Param("key")
-
-        service, exists := config.ServiceMap[key]
-        if (!exists) {
-            c.Status(404)
+    mux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+        if r.URL.Path != "/" {
+            http.NotFound(rw, r)
             return
         }
 
+        http.ServeFile(rw, r, "index.html")
+    })
+
+    mux.HandleFunc("/config", func(rw http.ResponseWriter, _ *http.Request) {
+        rw.Header().Add("Content-Type", "application/json")
+        rw.Write(configMarshaled)
+    })
+
+    // As of Go 1.21, ServeMux does not support wildcard matching, this will change in 1.22
+    mux.HandleFunc("/service/info", func(rw http.ResponseWriter, r *http.Request) {
+        key := r.URL.Query().Get("key")
+
+        service, exists := config.ServiceMap[key]
+        if (!exists) {
+            http.NotFound(rw, r)
+            return
+        }
+
+        rw.Header().Add("Content-Type", "application/json")
+
         resp, err := client.Get(service.Url)
         if err != nil || resp.StatusCode >= 500 {
-            c.JSON(200, gin.H{"status": "offline"})
+            rw.Write([]byte("{ \"status\": \"offline\" }"))
         } else {
-            c.JSON(200, gin.H{"status": "online"})
+            rw.Write([]byte("{ \"status\": \"online\" }"))
         }
     })
 
-    fmt.Printf("Speisekarte ist ready zu serve at http://localhost:%d\n", config.Port)
-    r.Run(fmt.Sprint(":", config.Port))
+    fmt.Printf("Speisekarte is running at http://localhost:%d\n", config.Port)
+    http.ListenAndServe(fmt.Sprint(":", config.Port), mux)
 }
