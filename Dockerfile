@@ -2,7 +2,7 @@ FROM golang:1.21-alpine as build
 WORKDIR /build
 COPY app.go go.mod go.sum /build/
 RUN go get -d -v ./...
-RUN go build
+RUN go build -ldflags="-s -w"
 
 FROM alpine:3.18
 WORKDIR /app
