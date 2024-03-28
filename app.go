@@ -81,7 +81,7 @@ func main() {
 
     mux := http.NewServeMux()
 
-    mux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+    mux.HandleFunc("GET /", func(rw http.ResponseWriter, r *http.Request) {
         if r.URL.Path != "/" {
             http.NotFound(rw, r)
             return
@@ -90,14 +90,13 @@ func main() {
         http.ServeFile(rw, r, "index.html")
     })
 
-    mux.HandleFunc("/config", func(rw http.ResponseWriter, _ *http.Request) {
+    mux.HandleFunc("GET /config", func(rw http.ResponseWriter, _ *http.Request) {
         rw.Header().Add("Content-Type", "application/json")
         rw.Write(configMarshaled)
     })
 
-    // As of Go 1.21, ServeMux does not support wildcard matching, this will change in 1.22
-    mux.HandleFunc("/service/info", func(rw http.ResponseWriter, r *http.Request) {
-        key := r.URL.Query().Get("key")
+    mux.HandleFunc("GET /service/{key}/info", func(rw http.ResponseWriter, r *http.Request) {
+        key := r.PathValue("key")
 
         service, exists := config.ServiceMap[key]
         if (!exists) {

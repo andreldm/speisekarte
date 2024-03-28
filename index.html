@@ -212,7 +212,7 @@
                 }
                 list.insertBefore(el, findSlot(category));
 
-                fetch(`/service/info?key=${service.key}`)
+                fetch(`/service/${service.key}/info`)
                 .then((response) => response.json())
                 .then((info) => update(info.status))
                 .catch(() => update("offline"));

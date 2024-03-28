@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine as build
+FROM golang:1.22-alpine as build
 WORKDIR /build
 COPY app.go go.mod go.sum /build/
 RUN go get -d -v ./...
