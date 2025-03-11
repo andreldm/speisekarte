@@ -170,7 +170,7 @@
                     : el.nextElementSibling;
         }
 
-        fetch('/config')
+        fetch('config')
         .then((response) => response.json())
         .then((config) => {
             const list = q("#list");
@@ -212,7 +212,7 @@
                 }
                 list.insertBefore(el, findSlot(category));
 
-                fetch(`/service/${service.key}/info`)
+                fetch(`service/${service.key}/info`)
                 .then((response) => response.json())
                 .then((info) => update(info.status))
                 .catch(() => update("offline"));
