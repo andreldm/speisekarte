@@ -21,6 +21,7 @@ type Service struct {
     Description string `json:"description"`
     Url string `json:"url"`
     OverrideHostname bool `json:"overrideHostname"`
+    AssumeUp bool `json:"assumeUp"`
 }
 
 type Config struct {

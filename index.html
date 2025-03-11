@@ -212,10 +212,14 @@
                 }
                 list.insertBefore(el, findSlot(category));
 
-                fetch(`service/${service.key}/info`)
-                .then((response) => response.json())
-                .then((info) => update(info.status))
-                .catch(() => update("offline"));
+                if (service.assumeUp) {
+                    update("online")
+                } else {
+                    fetch(`service/${service.key}/info`)
+                    .then((response) => response.json())
+                    .then((info) => update(info.status))
+                    .catch(() => update("offline"));
+                }
             });
         });
     </script>
